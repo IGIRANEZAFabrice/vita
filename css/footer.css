@@ -1,0 +1,181 @@
+
+        footer {
+            background: #000000;
+            color: #ffffff;
+            padding: 4rem 1.5rem 0;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.2fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            color: #00e600;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+
+        .footer-logo h3 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 1.3rem;
+        }
+
+        .footer-description {
+            color: #b3b3b3;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-top: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #b3b3b3;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: #00e600;
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: #00e600;
+            color: #000000;
+            transform: translateY(-3px);
+        }
+
+        .contact-info p {
+            color: #b3b3b3;
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .contact-info i {
+            color: #00e600;
+            font-size: 0.9rem;
+            width: 16px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #2a2a2a;
+            padding: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-bottom-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: #00e600;
+        }
+
+        .separator {
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                padding: 3rem 1rem 0;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .footer-bottom-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            footer {
+                padding: 2.5rem 0.8rem 0;
+            }
+
+            .social-links {
+                gap: 0.8rem;
+            }
+
+            .social-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+        }

@@ -1,0 +1,13 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php
+
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html
+
+# Database Configuration
+SetEnv DB_USERNAME root
+SetEnv DB_HOST localhost
+SetEnv DB_NAME ecomercedb
+SetEnv DB_PASSWORD
