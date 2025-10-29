@@ -18,10 +18,13 @@ body {
   height: 100vh;
   width: 250px;
   background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-  padding: 1.5rem 0;
+  padding: 0;
   transition: width 0.3s ease;
   z-index: 1000;
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .sidebar.collapsed {
@@ -29,16 +32,17 @@ body {
 }
 
 .sidebar-logo {
-  padding: 0 1.5rem 2rem;
+  padding: 1.5rem 1.5rem 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   gap: 0.8rem;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .sidebar.collapsed .sidebar-logo {
-  padding: 0 1rem 2rem;
+  padding: 1.5rem 1rem 1.5rem;
 }
 
 .logo-icon {
@@ -68,6 +72,31 @@ body {
 .sidebar-menu {
   list-style: none;
   padding: 1.5rem 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 230, 0, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+/* Custom Scrollbar for Webkit browsers */
+.sidebar-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+  background: rgba(0, 230, 0, 0.3);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 230, 0, 0.5);
 }
 
 .sidebar-menu li {

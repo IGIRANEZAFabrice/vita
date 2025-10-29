@@ -72,6 +72,12 @@ while ($row = $slides_result->fetch_assoc()) {
     $slides[] = $row;
 }
 
+// Debug: Show what we got from database
+// echo "<!-- DEBUG: Found " . count($slides) . " slides in database -->";
+// foreach ($slides as $idx => $s) {
+//     echo "<!-- DEBUG Slide " . ($idx+1) . ": image_path = '" . htmlspecialchars($s['image_path']) . "' -->";
+// }
+
 // Ensure we have exactly 3 slides
 while (count($slides) < 3) {
     $slides[] = [
@@ -456,8 +462,21 @@ while (count($slides) < 3) {
         let previewHTML = '';
 
         if (imagePath) {
+            const fullPath = '../' + imagePath;
+            console.log('Loading image from:', fullPath);
+            console.log('Original path from DB:', imagePath);
+
             previewHTML = `
-                <img src="../../../${imagePath}" alt="Slide ${index + 1}" class="preview-image">
+                <div style="width: 100%; text-align: center;">
+                    <img src="${fullPath}" alt="Slide ${index + 1}" class="preview-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; color: red; padding: 20px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load image</p>
+                        <p style="font-size: 0.85rem; color: #666;">Path: ${fullPath}</p>
+                        <p style="font-size: 0.85rem; color: #666;">DB Path: ${imagePath}</p>
+                    </div>
+                </div>
             `;
         } else {
             previewHTML = `

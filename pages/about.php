@@ -1,3 +1,24 @@
+<?php
+// Fetch About Us content from database
+require_once 'config/db.php';
+
+// Get all active content sections ordered by section_order
+$content_query = "SELECT * FROM about_us_content WHERE is_active = 1 ORDER BY section_order ASC";
+$content_result = $conn->query($content_query);
+
+// Store content in an array for easy access
+$content_sections = [];
+if ($content_result && $content_result->num_rows > 0) {
+    while ($row = $content_result->fetch_assoc()) {
+        $content_sections[$row['section_name']] = $row;
+    }
+}
+
+// Helper function to get content
+function getContent($sections, $section_name, $field = 'section_content', $default = '') {
+    return isset($sections[$section_name]) ? $sections[$section_name][$field] : $default;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,36 +37,100 @@
 <!-- Page Hero -->
 <section class="page-hero">
     <div>
-        <h1>About Us</h1>
-        <p>Your Trusted Medical Supply Partner</p>
+        <h1><?php echo htmlspecialchars(getContent($content_sections, 'hero', 'section_title', 'About Us')); ?></h1>
+        <p><?php echo htmlspecialchars(substr(getContent($content_sections, 'hero', 'section_content', 'Your Trusted Medical Supply Partner'), 0, 100)); ?>...</p>
     </div>
 </section>
 
-<!-- About Content -->
+<!-- Hero/Introduction Section -->
+<?php if (isset($content_sections['hero'])): ?>
 <section class="about-section">
     <div class="about-grid">
         <div class="about-image">
-            🩺
+            <?php
+            $hero_image = getContent($content_sections, 'hero', 'section_image');
+            if ($hero_image && file_exists($hero_image)):
+            ?>
+                <img src="<?php echo htmlspecialchars($hero_image); ?>" alt="<?php echo htmlspecialchars(getContent($content_sections, 'hero', 'section_title')); ?>">
+            <?php else: ?>
+                🩺
+            <?php endif; ?>
         </div>
         <div class="about-content">
-            <h2>Leading Healthcare Solutions Provider</h2>
-            <p>
-                At <span class="highlight">VitaVoltCore Ltd</span>, we are dedicated to providing healthcare professionals 
-                with the highest quality medical equipment and supplies. With over 6 years of experience in the 
-                industry, we have built a reputation for reliability, quality, and exceptional customer service.
-            </p>
-            <p>
-                Our mission is to support healthcare providers by delivering innovative medical solutions that 
-                improve patient outcomes and streamline healthcare delivery. We work with leading manufacturers 
-                worldwide to ensure our products meet the highest international standards.
-            </p>
-            <p>
-                From diagnostic equipment to surgical instruments, we offer a comprehensive range of products 
-                that cater to hospitals, clinics, and medical practitioners across the region.
-            </p>
+            <h2><?php echo htmlspecialchars(getContent($content_sections, 'hero', 'section_title')); ?></h2>
+            <?php
+            $hero_content = getContent($content_sections, 'hero', 'section_content');
+            $paragraphs = explode("\n", $hero_content);
+            foreach ($paragraphs as $paragraph) {
+                if (trim($paragraph)) {
+                    echo '<p>' . nl2br(htmlspecialchars(trim($paragraph))) . '</p>';
+                }
+            }
+            ?>
         </div>
     </div>
 </section>
+<?php endif; ?>
+
+<!-- Mission Section -->
+<?php if (isset($content_sections['mission'])): ?>
+<section class="about-section alternate">
+    <div class="about-grid reverse">
+        <div class="about-content">
+            <h2><?php echo htmlspecialchars(getContent($content_sections, 'mission', 'section_title')); ?></h2>
+            <?php
+            $mission_content = getContent($content_sections, 'mission', 'section_content');
+            $paragraphs = explode("\n", $mission_content);
+            foreach ($paragraphs as $paragraph) {
+                if (trim($paragraph)) {
+                    echo '<p>' . nl2br(htmlspecialchars(trim($paragraph))) . '</p>';
+                }
+            }
+            ?>
+        </div>
+        <div class="about-image">
+            <?php
+            $mission_image = getContent($content_sections, 'mission', 'section_image');
+            if ($mission_image && file_exists($mission_image)):
+            ?>
+                <img src="<?php echo htmlspecialchars($mission_image); ?>" alt="<?php echo htmlspecialchars(getContent($content_sections, 'mission', 'section_title')); ?>">
+            <?php else: ?>
+                🎯
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<!-- Vision Section -->
+<?php if (isset($content_sections['vision'])): ?>
+<section class="about-section">
+    <div class="about-grid">
+        <div class="about-image">
+            <?php
+            $vision_image = getContent($content_sections, 'vision', 'section_image');
+            if ($vision_image && file_exists($vision_image)):
+            ?>
+                <img src="<?php echo htmlspecialchars($vision_image); ?>" alt="<?php echo htmlspecialchars(getContent($content_sections, 'vision', 'section_title')); ?>">
+            <?php else: ?>
+                🔭
+            <?php endif; ?>
+        </div>
+        <div class="about-content">
+            <h2><?php echo htmlspecialchars(getContent($content_sections, 'vision', 'section_title')); ?></h2>
+            <?php
+            $vision_content = getContent($content_sections, 'vision', 'section_content');
+            $paragraphs = explode("\n", $vision_content);
+            foreach ($paragraphs as $paragraph) {
+                if (trim($paragraph)) {
+                    echo '<p>' . nl2br(htmlspecialchars(trim($paragraph))) . '</p>';
+                }
+            }
+            ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- Stats Section -->
 <section class="stats-section">
@@ -82,32 +167,116 @@
 </section>
 
 <!-- Values Section -->
+<?php if (isset($content_sections['values'])): ?>
 <section class="values-section">
-    <h2>Our Core Values</h2>
+    <h2><?php echo htmlspecialchars(getContent($content_sections, 'values', 'section_title')); ?></h2>
     <div class="values-grid">
+        <?php
+        $values_content = getContent($content_sections, 'values', 'section_content');
+        $values = explode("\n", $values_content);
+        $icons = ['shield-alt', 'handshake', 'lightbulb', 'heart', 'star', 'check-circle'];
+        $icon_index = 0;
+
+        foreach ($values as $value) {
+            $value = trim($value);
+            if (empty($value)) continue;
+
+            // Split by colon to get title and description
+            $parts = explode(':', $value, 2);
+            $title = isset($parts[0]) ? trim($parts[0]) : $value;
+            $description = isset($parts[1]) ? trim($parts[1]) : '';
+
+            $icon = $icons[$icon_index % count($icons)];
+            $icon_index++;
+        ?>
         <div class="value-card">
             <div class="value-icon">
-                <i class="fas fa-shield-alt"></i>
+                <i class="fas fa-<?php echo $icon; ?>"></i>
             </div>
-            <h3>Quality First</h3>
-            <p>We source only certified medical equipment from trusted manufacturers, ensuring every product meets rigorous quality standards.</p>
+            <h3><?php echo htmlspecialchars($title); ?></h3>
+            <?php if ($description): ?>
+                <p><?php echo htmlspecialchars($description); ?></p>
+            <?php endif; ?>
         </div>
-        <div class="value-card">
-            <div class="value-icon">
-                <i class="fas fa-handshake"></i>
+        <?php } ?>
+    </div>
+</section>
+<?php endif; ?>
+
+<!-- Why Choose Us Section -->
+<?php if (isset($content_sections['why_choose_us'])): ?>
+<section class="about-section">
+    <div class="about-content-full">
+        <h2><?php echo htmlspecialchars(getContent($content_sections, 'why_choose_us', 'section_title')); ?></h2>
+        <div class="features-grid">
+            <?php
+            $features_content = getContent($content_sections, 'why_choose_us', 'section_content');
+            $features = explode("\n", $features_content);
+            $feature_icons = ['boxes', 'certificate', 'headset', 'dollar-sign', 'shipping-fast', 'tools'];
+            $feature_icon_index = 0;
+
+            foreach ($features as $feature) {
+                $feature = trim($feature);
+                if (empty($feature)) continue;
+
+                // Split by colon to get title and description
+                $parts = explode(':', $feature, 2);
+                $title = isset($parts[0]) ? trim($parts[0]) : $feature;
+                $description = isset($parts[1]) ? trim($parts[1]) : '';
+
+                $icon = $feature_icons[$feature_icon_index % count($feature_icons)];
+                $feature_icon_index++;
+            ?>
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-<?php echo $icon; ?>"></i>
+                </div>
+                <h4><?php echo htmlspecialchars($title); ?></h4>
+                <?php if ($description): ?>
+                    <p><?php echo htmlspecialchars($description); ?></p>
+                <?php endif; ?>
             </div>
-            <h3>Trust & Reliability</h3>
-            <p>Building long-term relationships through consistent delivery, transparent communication, and dependable service.</p>
-        </div>
-        <div class="value-card">
-            <div class="value-icon">
-                <i class="fas fa-lightbulb"></i>
-            </div>
-            <h3>Innovation</h3>
-            <p>Continuously updating our product range with the latest medical technologies and healthcare innovations.</p>
+            <?php } ?>
         </div>
     </div>
 </section>
+<?php endif; ?>
+
+<!-- History Section -->
+<?php if (isset($content_sections['history'])): ?>
+<section class="about-section alternate">
+    <div class="about-content-full">
+        <h2><?php echo htmlspecialchars(getContent($content_sections, 'history', 'section_title')); ?></h2>
+        <?php
+        $history_content = getContent($content_sections, 'history', 'section_content');
+        $paragraphs = explode("\n", $history_content);
+        foreach ($paragraphs as $paragraph) {
+            if (trim($paragraph)) {
+                echo '<p>' . nl2br(htmlspecialchars(trim($paragraph))) . '</p>';
+            }
+        }
+        ?>
+    </div>
+</section>
+<?php endif; ?>
+
+<!-- Certifications Section -->
+<?php if (isset($content_sections['certifications'])): ?>
+<section class="about-section">
+    <div class="about-content-full">
+        <h2><?php echo htmlspecialchars(getContent($content_sections, 'certifications', 'section_title')); ?></h2>
+        <?php
+        $cert_content = getContent($content_sections, 'certifications', 'section_content');
+        $paragraphs = explode("\n", $cert_content);
+        foreach ($paragraphs as $paragraph) {
+            if (trim($paragraph)) {
+                echo '<p>' . nl2br(htmlspecialchars(trim($paragraph))) . '</p>';
+            }
+        }
+        ?>
+    </div>
+</section>
+<?php endif; ?>
 
 <?php include 'include/footer.php'; ?>
 </body>

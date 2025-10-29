@@ -1,132 +1,6 @@
 
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* User Profile Dropdown Styles */
-        .user-profile-menu {
-            position: relative;
-            display: inline-block;
-        }
-
-        .user-profile-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00e600, #00b300);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0, 230, 0, 0.3);
-            border: 2px solid #fff;
-        }
-
-        .user-profile-avatar:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 15px rgba(0, 230, 0, 0.5);
-        }
-
-        .user-profile-dropdown {
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            min-width: 220px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .user-profile-menu:hover .user-profile-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .user-profile-header {
-            padding: 1.25rem;
-            border-bottom: 1px solid #f0f0f0;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 12px 12px 0 0;
-        }
-
-        .user-profile-header .user-name {
-            font-weight: 700;
-            color: #000;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .user-profile-header .user-email {
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        .user-profile-header .user-role {
-            display: inline-block;
-            background: linear-gradient(135deg, #00e600, #00b300);
-            color: #000;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .user-profile-dropdown a {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 1.25rem;
-            color: #333;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .user-profile-dropdown a:hover {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding-left: 1.5rem;
-        }
-
-        .user-profile-dropdown a i {
-            width: 18px;
-            font-size: 1rem;
-            color: #00e600;
-        }
-
-        .user-profile-dropdown a.logout-link {
-            border-top: 1px solid #f0f0f0;
-            color: #dc3545;
-            border-radius: 0 0 12px 12px;
-        }
-
-        .user-profile-dropdown a.logout-link i {
-            color: #dc3545;
-        }
-
-        .user-profile-dropdown a.logout-link:hover {
-            background: linear-gradient(135deg, #ffe5e5, #ffcccc);
-        }
-
-        .user-profile-dropdown a.dashboard-link {
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-        }
-
-        .user-profile-dropdown a.dashboard-link:hover {
-            background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
-        }
-    </style>
+    
     <header>
         <nav class="nav-container">
             <div class="logo">
@@ -145,7 +19,35 @@
                 <li><a href="index.php?page=home">Home</a></li>
                 <li><a href="index.php?page=about">About Us</a></li>
                 <li><a href="index.php?page=contact">Contact Us</a></li>
-                <li><a href="index.php?page=product">Products</a></li>
+                <li class="nav-dropdown">
+                    <a href="index.php?page=product">Products <i class="fas fa-chevron-down"></i></a>
+                    <div class="nav-dropdown-menu">
+                       
+                        <div class="nav-dropdown-content">
+                            
+                            <?php
+                            // Fetch categories from database
+                            $cat_query = "SELECT category_id, category_name FROM categories ORDER BY category_name ASC";
+                            $cat_result = $conn->query($cat_query);
+
+                            if ($cat_result && $cat_result->num_rows > 0) {
+                                while($category = $cat_result->fetch_assoc()) {
+                                    $cat_id = $category['category_id'];
+                                    $cat_name = htmlspecialchars($category['category_name']);
+
+                                    echo '<a href="index.php?page=product&category=' . $cat_id . '" class="nav-dropdown-item">';
+                                    echo $cat_name;
+                                    echo '</a>';
+                                }
+                            } else {
+                                echo '<div class="nav-dropdown-empty">';
+                                echo '<p>No categories available</p>';
+                                echo '</div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </li>
                 <li><a href="index.php?page=training">Training</a></li>
                 <li><a href="index.php?page=quote" class="quote-btn">Get Quote</a></li>
             </ul>
@@ -203,10 +105,153 @@
                     </a>
                 <?php endif; ?>
 
-                <a href="index.php?page=cart" class="icon-link" title="Cart">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="cart-count">3</span>
-                </a>
+                <!-- Search Icon -->
+                <button class="icon-link search-toggle-btn" title="Search" onclick="toggleSearch()">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+
+                <div class="cart-dropdown-container">
+                    <a href="index.php?page=cart" class="icon-link" title="Cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="cart-count" style="display: none;">0</span>
+                    </a>
+
+                    <!-- Cart Dropdown -->
+                    <div class="cart-dropdown" id="cart-dropdown">
+                        <div class="cart-dropdown-header">
+                            <h3>Shopping Cart</h3>
+                            <span class="cart-dropdown-count">0 items</span>
+                        </div>
+
+                        <div class="cart-dropdown-items" id="cart-dropdown-items">
+                            <!-- Items will be inserted here by JavaScript -->
+                        </div>
+
+                        <div class="cart-dropdown-empty" id="cart-dropdown-empty" style="display: none;">
+                            <i class="fas fa-shopping-cart"></i>
+                            <p>Your cart is empty</p>
+                        </div>
+
+                        <div class="cart-dropdown-footer" id="cart-dropdown-footer">
+                            <div class="cart-dropdown-total">
+                                <span>Total:</span>
+                                <span class="cart-dropdown-total-amount">$0.00</span>
+                            </div>
+                            <a href="index.php?page=cart" class="cart-dropdown-view-btn">
+                                <i class="fas fa-shopping-cart"></i> View Cart
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </nav>
+
+        <!-- Search Bar -->
+        <div class="search-bar" id="search-bar">
+            <button type="button" class="search-close-btn-top" onclick="toggleSearch()" title="Close Search">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="search-bar-container">
+                <form action="index.php" method="GET" class="search-form" id="search-form">
+                    <input type="hidden" name="page" value="product">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input
+                            type="text"
+                            name="search"
+                            id="search-input"
+                            class="search-input"
+                            placeholder="Search for products..."
+                            autocomplete="off"
+                        >
+                        <button type="submit" class="search-submit-btn" title="Search">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Send</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </header>
+
+    <!-- Initialize Cart Count -->
+    <script src="js/simple-cart.js"></script>
+    <script src="js/cart-dropdown.js"></script>
+    <script>
+        // Update cart count and dropdown on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof simpleCart !== 'undefined') {
+                simpleCart.updateCartCount();
+            }
+            if (typeof updateCartDropdown !== 'undefined') {
+                updateCartDropdown();
+            }
+        });
+
+        // Update dropdown when cart changes
+        window.addEventListener('cartUpdated', function() {
+            if (typeof updateCartDropdown !== 'undefined') {
+                updateCartDropdown();
+            }
+        });
+    </script>
+
+    <!-- Search Bar Toggle Script -->
+    <script>
+        function toggleSearch() {
+            const searchBar = document.getElementById('search-bar');
+            const searchInput = document.getElementById('search-input');
+
+            if (searchBar.classList.contains('active')) {
+                // Close search bar
+                searchBar.classList.remove('active');
+                searchInput.value = '';
+            } else {
+                // Open search bar
+                searchBar.classList.add('active');
+                // Focus on input after animation
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+        }
+
+        // Close search bar on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const searchBar = document.getElementById('search-bar');
+                if (searchBar.classList.contains('active')) {
+                    toggleSearch();
+                }
+            }
+        });
+
+        // Handle search form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('search-form');
+            const searchInput = document.getElementById('search-input');
+
+            if (searchForm && searchInput) {
+                // Submit on Enter key
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (searchInput.value.trim() !== '') {
+                            searchForm.submit();
+                        } else {
+                            alert('Please enter a search term');
+                        }
+                    }
+                });
+
+                // Validate on form submit
+                searchForm.addEventListener('submit', function(e) {
+                    if (searchInput.value.trim() === '') {
+                        e.preventDefault();
+                        alert('Please enter a search term');
+                        searchInput.focus();
+                    }
+                });
+            }
+        });
+    </script>

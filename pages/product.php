@@ -127,9 +127,19 @@
                                 <div style="color: #666; font-size: 0.9rem; margin: 0.5rem 0;"><?php echo $short_desc; ?>...</div>
                             <?php endif; ?>
                             <div class="product-price"><?php echo $price; ?></div>
-                            <a href="index.php?page=productOpen&id=<?php echo $product_id; ?>" class="view-details-btn">
-                                <i class="fas fa-eye"></i> View Details
-                            </a>
+                            <div class="product-actions">
+                                <button onclick="addToCart(<?php echo $product_id; ?>, 1, {
+                                    product_name: '<?php echo addslashes($product_name); ?>',
+                                    price: <?php echo $row['price'] ?: 0; ?>,
+                                    image_url: '<?php echo addslashes($image_url); ?>',
+                                    sku: '<?php echo addslashes($row['sku']); ?>'
+                                })" class="add-to-cart-btn">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
+                                <a href="index.php?page=productOpen&id=<?php echo $product_id; ?>" class="view-details-btn">
+                                    <i class="fas fa-eye"></i> View Details
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <?php

@@ -5,7 +5,6 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
             <img src="../logo/logo.png" alt="REDY-MED Logo" class="logo-icon">
-            <span class="logo-text">REDY-MED Client</span>
         </div>
         <ul class="sidebar-menu">
             <li>
