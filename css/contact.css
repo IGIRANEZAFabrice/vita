@@ -1,6 +1,5 @@
 /* Page Hero */
 .page-hero {
-    margin-top: 80px;
     height: 400px;
     background: linear-gradient(135deg, rgba(0, 230, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%),
                 url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%23e8f5e9" width="1200" height="400"/><text x="600" y="200" font-size="100" fill="%2300e600" text-anchor="middle" dominant-baseline="middle" font-family="Arial">📞</text></svg>');
