@@ -295,7 +295,7 @@
                             $image_url = $row['primary_image'] ? $row['primary_image'] : 'images/placeholder.jpg';
                             echo '<tr>';
                             echo '<td>' . $row['product_id'] . '</td>';
-                            echo '<td><img src="../../' . htmlspecialchars($image_url) . '" alt="Product" class="product-image"></td>';
+                            echo '<td><img src="../' . htmlspecialchars($image_url) . '" alt="Product" class="product-image"></td>';
                             echo '<td><strong>' . htmlspecialchars($row['product_name']) . '</strong></td>';
                             echo '<td>' . htmlspecialchars($row['category_name']) . '</td>';
                             echo '<td>$' . number_format($row['price'], 2) . '</td>';

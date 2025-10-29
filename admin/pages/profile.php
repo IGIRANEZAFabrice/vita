@@ -470,7 +470,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
             <div class="profile-sidebar">
                 <div class="profile-avatar">
                     <?php if (!empty($user['profile_image'])): ?>
-                        <img src="../../<?php echo htmlspecialchars($user['profile_image']); ?>" alt="Profile">
+                        <img src="../<?php echo htmlspecialchars($user['profile_image']); ?>" alt="Profile">
                     <?php else: ?>
                         <?php echo strtoupper(substr($user['first_name'] ?? 'A', 0, 1)); ?>
                     <?php endif; ?>

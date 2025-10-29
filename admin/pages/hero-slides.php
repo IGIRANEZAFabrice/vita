@@ -457,7 +457,7 @@ while (count($slides) < 3) {
 
         if (imagePath) {
             previewHTML = `
-                <img src="../../${imagePath}" alt="Slide ${index + 1}" class="preview-image">
+                <img src="../../../${imagePath}" alt="Slide ${index + 1}" class="preview-image">
             `;
         } else {
             previewHTML = `

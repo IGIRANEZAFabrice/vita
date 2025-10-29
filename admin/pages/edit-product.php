@@ -1220,7 +1220,7 @@ while ($row = $cert_result->fetch_assoc()) {
                 echo '  galleryItem.className = "gallery-item";';
                 echo '  galleryItem.setAttribute("data-index", "existing_" + index);';
                 echo '  galleryItem.innerHTML = `';
-                echo '    <img src="../../${img.image_url}" alt="Gallery image">';
+                echo '    <img src="../${img.image_url}" alt="Gallery image">';
                 echo '    <button type="button" class="gallery-item-remove" onclick="removeExistingGalleryItem(\'existing_\' + ${index})">';
                 echo '      <i class="fas fa-trash"></i>';
                 echo '    </button>`;';
